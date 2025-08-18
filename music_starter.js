@@ -1,43 +1,85 @@
 
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
-  background(20)
-  textFont('Verdana'); // please use CSS safe fonts
-  rectMode(CENTER)
-  textSize(24);
-  
-   let bar_spacing = height / 10;
-   let bar_height = width / 12;
-   let bar_pos_x = width / 2;
- 
-// changes 
-   // vocal bar is red
-   fill(200, 0, 0);
-   rect(bar_pos_x, height / 2 + 1 * bar_spacing, 4 * vocal, bar_height);
-   fill(0);
-   text("vocals", bar_pos_x, height / 2 + 1 * bar_spacing + 8);
- 
-   // drum bar is green
-   fill(0, 200, 0);
-   rect(bar_pos_x, height / 2 + 2 * bar_spacing, 4 * drum, bar_height);
-   fill(0);
-   text("drums", bar_pos_x, height / 2 + 2 * bar_spacing + 8);
- 
-   // bass bar is blue
-   fill(50, 50, 240);
-   rect(bar_pos_x, height / 2 + 3 * bar_spacing, 4 * bass, bar_height);
-   fill(0);
-   text("bass", bar_pos_x, height / 2 + 3 * bar_spacing + 8);
- 
-   // other bar is white
-   fill(200, 200, 200);
-   rect(bar_pos_x, height / 2 + 4 * bar_spacing, 4 * other, bar_height);
-   fill(0);
-   text("other", bar_pos_x, height / 2 + 4 * bar_spacing + 8);
-   fill(255, 255, 0);
- 
-   // display "words"
-   textAlign(CENTER);
-   textSize(vocal);
-   text(words, width/2, height/3);
+
+   background(0);
+
+   //drawSphere(vocal,drum,bass,other);
+   soundBar(vocal,drum,bass,other);
+}
+
+
+function drawSphere(vocal){
+   colorMode(RGB)
+   background(20);
+   let sizeM = map(vocal,1,100,100,250);
+
+   push();
+   pointLight(255,255,255,200,-200,200);
+   specularMaterial(0,255,0);
+   shininess(50);
+   fill(0,0,0);
+
+   rotateWithFrameCount();
+   stroke(360,100,100);
+   strokeWeight(5);
+   noFill();
+   sphere(sizeM,10,10);
+   pop();
+
+}
+
+function soundBarOld(vocal,drum,bass,other){
+   //generates a bar that visualizes the bass
+   let vocalM = map(vocal,0,100,0,20);
+   let bassM = map(bass,0,100,0,20);
+   let drumM = map(drum,0,100,0,20)
+   let otherM = map(other,0,100,0,20)
+   
+
+   colorMode(HSB);
+   translate(0,400);
+   strokeWeight(0);
+   for(let i = 0; i<vocalM; i ++){
+      fill(120-(8*i),100,100);
+      rect(300,30*-i,100,30);
+
+   }
+
+   for(let i = 0; i<vocalM; i ++){
+      fill(120-(8*i),100,100);
+      rect(100,30*-i,100,30);
+
+   }
+}
+
+function soundBar(vocal,drum,bass,other){
+   //generates a bar that visualizes the bass
+
+   let type = [];
+   //pushes the variable mappings into an array
+   type.push(vocalM = map(vocal,0,100,0,20));
+   type.push(bassM = map(bass,0,100,0,20));
+   type.push(drumM = map(drum,0,100,0,20));
+   type.push(otherM = map(other,0,100,0,20));
+   
+   //set up for sound bars
+   colorMode(HSB);
+   translate(0,400);
+   strokeWeight(0);
+
+   //nested for loop looping through the array-setting up a bar for each
+   for(let j = 0; j<type.length; j++){
+      for(let i = 0; i<type[j]; i++){
+         fill(120-(8*i),100,100);
+         rect(-400+(220*j),30-(40*i),200,30);
+
+      }
+   }
+
+}
+
+function rotateWithFrameCount(){
+   rotateY(frameCount);
+   rotateX(frameCount);
 }
